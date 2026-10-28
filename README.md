@@ -11,6 +11,8 @@ Output files:
 i included the `output/` directory w/ `git add -f output/` so if you just wanna see results
 just look there. Normally that shouldn't be committed tho.
 
+**ALSO**, if you're viewing `OUTPUT.json` in github viewer, hit the "Raw" button to see the raw content more easily.
+
 ### stuff used :p
 
 - jsdom: convert html fetched w/ a regular ol' `fetch(url)` into a DOM object.
