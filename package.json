@@ -1,0 +1,17 @@
+{
+  "name": "llm-supported-scraping",
+  "version": "1.0.0",
+  "description": "Scrapes the web for petcare sources with the help of an LLM-as-a-judge",
+  "license": "ISC",
+  "author": "Asha Mavankal",
+  "type": "module",
+  "main": "search.js",
+  "scripts": {
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@mozilla/readability": "^0.6.0",
+    "jsdom": "^30.1.3",
+    "prettier": "^3.9.10"
+  }
+}

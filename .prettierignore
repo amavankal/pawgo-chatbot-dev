@@ -1,0 +1,9 @@
+# npm
+**/node_modules/
+**/.git
+
+# don't try to format HTML
+**/*.html
+
+# local stuffs
+LOCAL/
