@@ -15,7 +15,8 @@ const DEBUG = true; // change if U don't want FETCHED_HTML to be generated
 const DEBUG_DIR = "output/FETCHED_HTML";
 const RESULTS_FILE = "output/OUTPUT.json";
 
-const results = []; // { url: string, textContent: string }
+// (url: string, title: string, blocks: { type: string, text: string }[])
+const results = [];
 
 // 1: read urls from sources.json
 let urls;
@@ -91,15 +92,59 @@ for (let source of urls) {
   const { document } = new JSDOM(html).window;
 
   // get a readability object, and output to a file
-  let article = new Readability(document).parse();
+  const article = new Readability(document).parse();
+
+  // skip pages where Readability could not find an article
+  if (!article) {
+    console.log(`Could not extract an article from: ${source}\n`);
+    continue;
+  }
+
+  // report success only after confirming an article was found
   console.log("SUCCESS! for: " + source + "\n");
 
-  // add source url + text content to results
-  // get rid of all the silly spaces in text content w/ replace + RegEx
-  // the space fixing is iffy
+  // parse Readability's selected article HTML so cleanup can use page structure
+  const articleDocument = new JSDOM(article.content).window.document;
+
+  // remove standard page navigation and footer areas across sites
+  articleDocument
+    .querySelectorAll("nav, [role='navigation'], footer, [role='contentinfo']")
+    .forEach((element) => element.remove());
+
+  // remove common non-article sections when sites label them in their HTML
+  articleDocument
+    .querySelectorAll(
+      "[class*='breadcrumb'], [id*='breadcrumb'], [class*='social-share'], [class*='related-post'], [class*='newsletter']",
+    )
+    .forEach((element) => element.remove());
+
+  // remove links that the text is a page control, like “Skip to content” or “Go to top”
+  articleDocument.querySelectorAll("a").forEach((link) => {
+    const label = link.textContent.replace(/\s+/g, " ").trim().toLowerCase();
+    if (/^(skip to (main )?content|go to top|back to top|back to the top)$/.test(label)) {
+      const container = link.closest("li, p");
+      link.remove();
+      if (container && !container.textContent.trim()) container.remove();
+    }
+  });
+
+  // collect article headings and text blocks in their original order
+  const blocks = [
+    ...articleDocument.querySelectorAll(
+      "h1, h2, h3, h4, h5, h6, p, li, blockquote",
+    ),
+  ]
+    .map((element) => ({
+      type: element.tagName.toLowerCase(),
+      text: element.textContent.replace(/\s+/g, " ").trim(),
+    }))
+    .filter((block) => block.text);
+
+  // save the source and the cleaned and ordered blocks
   results.push({
     url: source,
-    textContent: article.textContent.replace(/\s+/g, " "),
+    title: article.title,
+    blocks,
   });
 }
 
