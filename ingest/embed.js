@@ -55,7 +55,11 @@ for (let start = 0; start < chunks.length; start += BATCH_SIZE) {
     // Confirm the vector size matches the Qdrant collection configuration.
     if (vector.length !== VECTOR_SIZE) {
       throw new Error(
-        "Embedding has " + vector.length + " dimensions, expected " + VECTOR_SIZE + ".",
+        "Embedding has " +
+          vector.length +
+          " dimensions, expected " +
+          VECTOR_SIZE +
+          ".",
       );
     }
 
@@ -68,11 +72,16 @@ for (let start = 0; start < chunks.length; start += BATCH_SIZE) {
 
   // Show embedding progress without uploading anything to Qdrant yet.
   console.log(
-    "Embedded " + Math.min(start + batch.length, chunks.length) +
-      " / " + chunks.length + " chunks",
+    "Embedded " +
+      Math.min(start + batch.length, chunks.length) +
+      " / " +
+      chunks.length +
+      " chunks",
   );
 }
 
 // Save the vectors to an intermediate file; load-qdrant.js can upload them later.
 await writeFile(OUTPUT_FILE, JSON.stringify(embeddedChunks));
-console.log(`Saved ${embeddedChunks.length} embedded chunks to ${fileURLToPath(OUTPUT_FILE)}`);
+console.log(
+  `Saved ${embeddedChunks.length} embedded chunks to ${fileURLToPath(OUTPUT_FILE)}`,
+);

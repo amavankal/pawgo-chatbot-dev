@@ -1,7 +1,10 @@
 import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 
-const EMBEDDED_FILE = new URL("../output/embedded_chunks.json", import.meta.url);
+const EMBEDDED_FILE = new URL(
+  "../output/embedded_chunks.json",
+  import.meta.url,
+);
 const QDRANT_URL = "http://127.0.0.1:6333";
 const COLLECTION = "pawgo_dogcare";
 const VECTOR_SIZE = 2560;
@@ -63,9 +66,7 @@ async function ensureCollection() {
     return;
   }
 
-  const info = await requestJSON(
-    QDRANT_URL + "/collections/" + COLLECTION,
-  );
+  const info = await requestJSON(QDRANT_URL + "/collections/" + COLLECTION);
   const size = info.result.config.params.vectors.size;
 
   // The model's vector length and the collection's configured length must match.
@@ -80,7 +81,8 @@ async function ensureCollection() {
 
 // Load the file produced by embed.js and prepare the Qdrant collection.
 const embeddedChunks = JSON.parse(await readFile(EMBEDDED_FILE, "utf8"));
-if (embeddedChunks.length === 0) throw new Error("No embedded chunks found to load.");
+if (embeddedChunks.length === 0)
+  throw new Error("No embedded chunks found to load.");
 await ensureCollection();
 
 // Upload the saved vectors in small groups.
@@ -91,7 +93,11 @@ for (let start = 0; start < embeddedChunks.length; start += BATCH_SIZE) {
   const points = batch.map((chunk) => {
     if (chunk.embedding.length !== VECTOR_SIZE) {
       throw new Error(
-        "Embedding has " + chunk.embedding.length + " dimensions, expected " + VECTOR_SIZE + ".",
+        "Embedding has " +
+          chunk.embedding.length +
+          " dimensions, expected " +
+          VECTOR_SIZE +
+          ".",
       );
     }
 
@@ -121,14 +127,20 @@ for (let start = 0; start < embeddedChunks.length; start += BATCH_SIZE) {
 
   // Show how many chunks have been uploaded so far.
   console.log(
-    "Loaded " + Math.min(start + batch.length, embeddedChunks.length) +
-      " / " + embeddedChunks.length + " chunks",
+    "Loaded " +
+      Math.min(start + batch.length, embeddedChunks.length) +
+      " / " +
+      embeddedChunks.length +
+      " chunks",
   );
 }
 
 // Check Qdrant's final point count and report where the data was saved.
 const finalInfo = await requestJSON(QDRANT_URL + "/collections/" + COLLECTION);
 console.log(
-  "Done. Qdrant reports " + finalInfo.result.points_count +
-    " points in " + COLLECTION + ".",
+  "Done. Qdrant reports " +
+    finalInfo.result.points_count +
+    " points in " +
+    COLLECTION +
+    ".",
 );

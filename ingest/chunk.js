@@ -33,7 +33,11 @@ for (const article of articles) {
 
   // Require a metadata entry so every saved chunk has source context.
   if (!metadata) {
-    throw new Error("Missing metadata for " + article.url + "; add it to source_metadata.json.");
+    throw new Error(
+      "Missing metadata for " +
+        article.url +
+        "; add it to source_metadata.json.",
+    );
   }
 
   let currentHeading = article.title;
