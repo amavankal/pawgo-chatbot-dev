@@ -1,7 +1,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 
-const CHUNKS_FILE = "../output/cleaned_chunks.json";
-const OUTPUT_FILE = "../output/embedded_chunks.json";
+const CHUNKS_FILE = new URL("../output/cleaned_chunks.json", import.meta.url);
+const OUTPUT_FILE = new URL("../output/embedded_chunks.json", import.meta.url);
 const OLLAMA_URL = "http://127.0.0.1:11434";
 const MODEL = "qwen3-embedding:4b";
 const VECTOR_SIZE = 2560;
