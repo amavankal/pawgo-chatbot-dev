@@ -45,7 +45,16 @@ for (let source of urls) {
   let urlObj = new URL(source);
 
   // fetch from source + get html
-  const response = await fetch(urlObj);
+  let response;
+  try {
+    response = await fetch(urlObj);
+  } catch (err) {
+    if (err == 'UND_ERR_CONNECT_TIMEOUT')
+      console.log(`Fetch failed for ${urlObj.href} due to timeout.\n`);
+    else
+      console.log(`Fetch failed for ${urlObj.href}.\n`);
+    continue;
+  }
 
   // verify content type - if not HTML oof
   if (!response.headers.get("content-type").includes("text/html")) {
@@ -164,7 +173,7 @@ console.log(
 
 // write results to a file
 try {
-  writeFile(
+  await writeFile(
     RESULTS_FILE,
     await format(JSON.stringify(results), { parser: "json" }),
   );
