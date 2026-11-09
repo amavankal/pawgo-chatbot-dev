@@ -7,7 +7,11 @@
   "type": "module",
   "main": "search.js",
   "scripts": {
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "scrape": "node ingest/scrape.js && node ingest/clean.js && node ingest/chunk.js",
+    "embed": "node ingest/embed.js",
+    "load-qdrant": "node ingest/load-qdrant.js",
+    "ingest": "node ingest/scrape.js && node ingest/clean.js && node ingest/chunk.js && node ingest/embed.js && node ingest/load-qdrant.js"
   },
   "dependencies": {
     "@mozilla/readability": "^0.6.0",
