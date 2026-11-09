@@ -51,4 +51,6 @@ const cleanedArticles = articles.map((article) => ({
 await writeFile(OUTPUT_FILE, JSON.stringify(cleanedArticles, null, 2));
 
 // Report the number of articles written to the intermediate file.
-console.log(`Cleaned ${cleanedArticles.length} articles into ${fileURLToPath(OUTPUT_FILE)}`);
+console.log(
+  `Cleaned ${cleanedArticles.length} articles into ${fileURLToPath(OUTPUT_FILE)}`,
+);

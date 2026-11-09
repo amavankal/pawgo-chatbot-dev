@@ -49,10 +49,9 @@ for (let source of urls) {
   try {
     response = await fetch(urlObj);
   } catch (err) {
-    if (err == 'UND_ERR_CONNECT_TIMEOUT')
+    if (err == "UND_ERR_CONNECT_TIMEOUT")
       console.log(`Fetch failed for ${urlObj.href} due to timeout.\n`);
-    else
-      console.log(`Fetch failed for ${urlObj.href}.\n`);
+    else console.log(`Fetch failed for ${urlObj.href}.\n`);
     continue;
   }
 
@@ -89,11 +88,9 @@ for (let source of urls) {
 
     // write to debugging file
     try {
-      const filename = (urlObj.hostname + urlObj.pathname).replace(/[./]/g, "-") + ".html";
-      await writeFile(
-        new URL(filename, DEBUG_DIR),
-        html,
-      );
+      const filename =
+        (urlObj.hostname + urlObj.pathname).replace(/[./]/g, "-") + ".html";
+      await writeFile(new URL(filename, DEBUG_DIR), html);
     } catch (err) {
       console.log("Error writing to debug file: " + err);
     }
@@ -132,7 +129,11 @@ for (let source of urls) {
   // remove links that the text is a page control, like “Skip to content” or “Go to top”
   articleDocument.querySelectorAll("a").forEach((link) => {
     const label = link.textContent.replace(/\s+/g, " ").trim().toLowerCase();
-    if (/^(skip to (main )?content|go to top|back to top|back to the top)$/.test(label)) {
+    if (
+      /^(skip to (main )?content|go to top|back to top|back to the top)$/.test(
+        label,
+      )
+    ) {
       const container = link.closest("li, p");
       link.remove();
       if (container && !container.textContent.trim()) container.remove();
