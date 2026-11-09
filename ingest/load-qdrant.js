@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 
-const EMBEDDED_FILE = "../output/embedded_chunks.json";
+const EMBEDDED_FILE = new URL("../output/embedded_chunks.json", import.meta.url);
 const QDRANT_URL = "http://127.0.0.1:6333";
 const COLLECTION = "pawgo_dogcare";
 const VECTOR_SIZE = 2560;

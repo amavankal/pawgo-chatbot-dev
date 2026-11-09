@@ -6,16 +6,15 @@
  *   concept, so there are probably many silly silly things happening..
  */
 import { readFile, writeFile, mkdir } from "node:fs/promises";
-import url from "node:url";
 import { JSDOM } from "jsdom";
 import { Readability } from "@mozilla/readability";
 import { format } from "prettier";
 
 const DEBUG = true; // change if U don't want FETCHED_HTML to be generated
-const OUTPUT_DIR = "../output/";
-const DEBUG_DIR = OUTPUT_DIR + "FETCHED_HTML/";
-const RESULTS_FILE = OUTPUT_DIR + "OUTPUT.json";
-const SOURCES = "./input/sources.json";
+const OUTPUT_DIR = new URL("../output/", import.meta.url);
+const DEBUG_DIR = new URL("FETCHED_HTML/", OUTPUT_DIR);
+const RESULTS_FILE = new URL("OUTPUT.json", OUTPUT_DIR);
+const SOURCES = new URL("./input/sources.json", import.meta.url);
 
 // (url: string, title: string, blocks: { type: string, text: string }[])
 const results = [];
