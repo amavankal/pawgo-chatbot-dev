@@ -1,4 +1,5 @@
 import { readFile, writeFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
 
 const CHUNKS_FILE = new URL("../output/cleaned_chunks.json", import.meta.url);
 const OUTPUT_FILE = new URL("../output/embedded_chunks.json", import.meta.url);
@@ -74,4 +75,4 @@ for (let start = 0; start < chunks.length; start += BATCH_SIZE) {
 
 // Save the vectors to an intermediate file; load-qdrant.js can upload them later.
 await writeFile(OUTPUT_FILE, JSON.stringify(embeddedChunks));
-console.log(`Saved ${embeddedChunks.length} embedded chunks to ${OUTPUT_FILE}`);
+console.log(`Saved ${embeddedChunks.length} embedded chunks to ${fileURLToPath(OUTPUT_FILE)}`);

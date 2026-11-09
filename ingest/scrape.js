@@ -34,7 +34,7 @@ await mkdir(OUTPUT_DIR, { recursive: true });
 // 1.5: create a directory for fetched html (for debugging inspection)
 if (DEBUG) {
   try {
-    await mkdir(`./${DEBUG_DIR}/`, { recursive: true });
+    await mkdir(DEBUG_DIR, { recursive: true });
   } catch (err) {
     if (err.code !== "EEXIST") console.log(err);
   }
@@ -80,8 +80,9 @@ for (let source of urls) {
 
     // write to debugging file
     try {
+      const filename = (urlObj.hostname + urlObj.pathname).replace(/[./]/g, "-") + ".html";
       await writeFile(
-        `./${DEBUG_DIR}/${(urlObj.hostname + urlObj.pathname).replace(/[./]/g, "-") + ".html"}`,
+        new URL(filename, DEBUG_DIR),
         html,
       );
     } catch (err) {
@@ -164,7 +165,7 @@ console.log(
 // write results to a file
 try {
   writeFile(
-    `${RESULTS_FILE}`,
+    RESULTS_FILE,
     await format(JSON.stringify(results), { parser: "json" }),
   );
 } catch (err) {
