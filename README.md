@@ -38,7 +38,9 @@ Open [http://localhost:6333/dashboard](http://localhost:6333/dashboard) to brows
 
 ## Set up Ollama and the embedding model
 
-Download and install [Ollama for macOS](https://ollama.com/download), then open the Ollama app so its local service is running. Download Qwen3 Embedding 4B:
+Download and install [Ollama for macOS](https://ollama.com/download)*, then open the Ollama app so its local service is running. Download Qwen3 Embedding 4B:
+
+<span style="color: gray; font-style: italic"> *An alternative to installing the Ollama app is to install just the CLI tool (`brew install ollama` on MacOS) and starting the local service (the server) with `ollama serve`</span>
 
 ```sh
 ollama pull qwen3-embedding:4b
@@ -54,19 +56,29 @@ The embedding model is downloaded to each teammate's computer by Ollama. It is n
 
 ## Run the scraping and data pipeline
 
+### Shortcut
+
+This runs all the scripts in order and may take a couple minutes:
+
+```sh
+npm run ingest
+```
+
+### Step-by-step
+
 To scrape the source URLs, run:
 
 ```sh
-node scrape.js
+node ingest/scrape.js
 ```
 
 To continue through cleaning, chunking, embedding, and database ingestion, run each script in order:
 
 ```sh
-node clean.js
-node chunk.js
-node embed.js
-node load-qdrant.js
+node ingest/clean.js
+node ingest/chunk.js
+node ingest/embed.js
+node ingest/load-qdrant.js
 ```
 
 The scripts create these files under `output/`:
