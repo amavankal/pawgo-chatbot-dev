@@ -1,8 +1,8 @@
 import { readFile, writeFile } from "node:fs/promises";
 
-const INPUT_FILE = "./output/cleaned_articles.json";
-const METADATA_FILE = "./source_metadata.json";
-const OUTPUT_FILE = "./output/cleaned_chunks.json";
+const INPUT_FILE = "../output/cleaned_articles.json";
+const METADATA_FILE = "./input/source_metadata.json";
+const OUTPUT_FILE = "../output/cleaned_chunks.json";
 
 // Set the target maximum size for each chunk, measured in words.
 const MAX_WORDS = 300;

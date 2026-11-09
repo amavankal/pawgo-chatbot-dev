@@ -1,7 +1,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 
-const INPUT_FILE = "./output/OUTPUT.json";
-const OUTPUT_FILE = "./output/cleaned_articles.json";
+const INPUT_FILE = "../output/OUTPUT.json";
+const OUTPUT_FILE = "../output/cleaned_articles.json";
 
 // Exact page-control labels to skip; article wording is otherwise preserved.
 const BOILERPLATE = new Set([
