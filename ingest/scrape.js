@@ -12,8 +12,10 @@ import { Readability } from "@mozilla/readability";
 import { format } from "prettier";
 
 const DEBUG = true; // change if U don't want FETCHED_HTML to be generated
-const DEBUG_DIR = "output/FETCHED_HTML";
-const RESULTS_FILE = "output/OUTPUT.json";
+const OUTPUT_DIR = "../output/";
+const DEBUG_DIR = OUTPUT_DIR + "FETCHED_HTML/";
+const RESULTS_FILE = OUTPUT_DIR + "OUTPUT.json";
+const SOURCES = "./input/sources.json";
 
 // (url: string, title: string, blocks: { type: string, text: string }[])
 const results = [];
@@ -21,14 +23,14 @@ const results = [];
 // 1: read urls from sources.json
 let urls;
 try {
-  urls = JSON.parse(await readFile("./sources.json")).urls;
+  urls = JSON.parse(await readFile(SOURCES)).urls;
   //console.log("URLS:\n" + urls.join("\n"));
 } catch (err) {
   console.log(err);
 }
 
 // create output directory
-mkdir("./output/", { recursive: true });
+await mkdir(OUTPUT_DIR, { recursive: true });
 
 // 1.5: create a directory for fetched html (for debugging inspection)
 if (DEBUG) {
@@ -163,7 +165,7 @@ console.log(
 // write results to a file
 try {
   writeFile(
-    `./${RESULTS_FILE}`,
+    `${RESULTS_FILE}`,
     await format(JSON.stringify(results), { parser: "json" }),
   );
 } catch (err) {
