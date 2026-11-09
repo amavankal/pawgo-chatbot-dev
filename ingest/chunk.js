@@ -1,4 +1,5 @@
 import { readFile, writeFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
 
 const INPUT_FILE = new URL("../output/cleaned_articles.json", import.meta.url);
 const METADATA_FILE = new URL("./input/source_metadata.json", import.meta.url);
@@ -100,4 +101,4 @@ for (const article of articles) {
 await writeFile(OUTPUT_FILE, JSON.stringify(chunks, null, 2));
 
 // Report how many chunks were created.
-console.log(`Created ${chunks.length} chunks in ${OUTPUT_FILE}`);
+console.log(`Created ${chunks.length} chunks in ${fileURLToPath(OUTPUT_FILE)}`);

@@ -1,4 +1,5 @@
 import { readFile, writeFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
 
 const INPUT_FILE = new URL("../output/OUTPUT.json", import.meta.url);
 const OUTPUT_FILE = new URL("../output/cleaned_articles.json", import.meta.url);
@@ -50,4 +51,4 @@ const cleanedArticles = articles.map((article) => ({
 await writeFile(OUTPUT_FILE, JSON.stringify(cleanedArticles, null, 2));
 
 // Report the number of articles written to the intermediate file.
-console.log(`Cleaned ${cleanedArticles.length} articles into ${OUTPUT_FILE}`);
+console.log(`Cleaned ${cleanedArticles.length} articles into ${fileURLToPath(OUTPUT_FILE)}`);
