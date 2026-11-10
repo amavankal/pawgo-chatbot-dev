@@ -12,7 +12,8 @@
     "scrape": "node ingest/scrape.js && node ingest/clean.js && node ingest/chunk.js",
     "embed": "node ingest/embed.js",
     "load-db": "node ingest/load-qdrant.js",
-    "ingest": "node ingest/scrape.js && node ingest/clean.js && node ingest/chunk.js && node ingest/embed.js && node ingest/load-qdrant.js"
+    "ingest": "node ingest/scrape.js && node ingest/clean.js && node ingest/chunk.js && node ingest/embed.js && node ingest/load-qdrant.js",
+    "test": "node rag/test-rag.js"
   },
   "dependencies": {
     "@mozilla/readability": "^0.6.0",

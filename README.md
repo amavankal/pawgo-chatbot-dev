@@ -16,6 +16,12 @@ npm run setup
 npm run ingest
 ```
 
+## How to test the pipeline
+
+```sh
+npm run test
+```
+
 ## Install the project libraries
 
 Install Node.js 18 or newer. In Terminal, go to this project folder and run:
