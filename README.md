@@ -16,6 +16,25 @@ npm install
 
 Each teammate runs their own local Qdrant database. Install and start [Docker Desktop for Mac](https://docs.docker.com/desktop/setup/install/mac-install/). Then, for a new setup, start Qdrant in Docker with:
 
+<span style="color: gray; font-style: italic"> _An alternative to installing Docker Desktop to get the Docker Engine w/ a Linux VM is to install `colima`, which provides the Linux environment Docker needs to run. You would then also need to install the Docker CLI client `docker` and `docker-compose` separately if you want to use colima. Start the Docker runtime with `colima start`_</span>
+
+### Shortcut
+
+To start the Qdrant database container (in root of this project):
+
+```sh
+docker compose up -d
+```
+
+To stop the Qdrant database container (in root of this project). Pass `-v` to `docker compose down` if for some reason you don't want to save the vectors stored in the database for the next time you spin up the database:
+
+```sh
+docker compose down # if you want to remove the container (saves the database data)
+docker compose stop qdrant  # if you want to temporarily stop qdrant; restart w/ docker compose start qdrant
+```
+
+### Using docker CLI with runtime args instead of docker compose
+
 ```sh
 docker run -d \
   --name pawgo-qdrant-db \
