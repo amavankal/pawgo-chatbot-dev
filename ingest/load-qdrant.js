@@ -1,28 +1,17 @@
 import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
+import {
+  requestJSON,
+  COLLECTION,
+  VECTOR_SIZE,
+  QDRANT_URL,
+} from "../utils/embeddings.js";
 
 const EMBEDDED_FILE = new URL(
   "../output/embedded_chunks.json",
   import.meta.url,
 );
-const QDRANT_URL = "http://127.0.0.1:6333";
-const COLLECTION = "pawgo_dogcare";
-const VECTOR_SIZE = 2560;
 const BATCH_SIZE = 8;
-
-// Send an HTTP request to Qdrant and return its JSON response.
-async function requestJSON(url, options = {}) {
-  const response = await fetch(url, options);
-  const body = await response.text();
-  const data = body ? JSON.parse(body) : {};
-
-  // Stop with the server's response included if Qdrant reports an error.
-  if (!response.ok) {
-    throw new Error("Request failed (" + response.status + "): " + body);
-  }
-
-  return data;
-}
 
 // Turn a chunk ID into a repeatable UUID-shaped ID that Qdrant accepts.
 // The same chunk ID creates the same point ID if this script is run again.
