@@ -4,6 +4,18 @@ This project is a proof of concept for collecting dog-care information for PawGo
 
 The scraper can be run by itself with `node scrape.js`. To run the full pipeline, use the complete sequence below.
 
+## Shortcut to run complete sequence from scratch on MacOS
+
+This is for if you don't want to install extra apps and already have Homebrew installed. For Windows just use your preferred package manager instead of brew and install the same tools. The steps below this are more detailed and don't abstract away complexity, so check them out for details.
+
+```sh
+npm install
+brew install ollama colima docker docker-compose
+colima start
+npm run setup
+npm run ingest
+```
+
 ## Install the project libraries
 
 Install Node.js 18 or newer. In Terminal, go to this project folder and run:
@@ -33,7 +45,7 @@ docker compose down # if you want to remove the container (saves the database da
 docker compose stop qdrant  # if you want to temporarily stop qdrant; restart w/ docker compose start qdrant
 ```
 
-### Using docker CLI with runtime args instead of docker compose
+### Using docker CLI with runtime args instead of docker compose shortcut
 
 ```sh
 docker run -d \
