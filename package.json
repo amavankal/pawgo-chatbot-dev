@@ -8,14 +8,18 @@
   "main": "search.js",
   "scripts": {
     "format": "prettier --write .",
+    "setup": "concurrently --prefix \"[{name}]\" --names \"Docker,Ollama\" \"docker compose up -d\" \"node scripts/setup-ollama.js\"",
     "scrape": "node ingest/scrape.js && node ingest/clean.js && node ingest/chunk.js",
     "embed": "node ingest/embed.js",
-    "load-qdrant": "node ingest/load-qdrant.js",
+    "load-db": "node ingest/load-qdrant.js",
     "ingest": "node ingest/scrape.js && node ingest/clean.js && node ingest/chunk.js && node ingest/embed.js && node ingest/load-qdrant.js"
   },
   "dependencies": {
     "@mozilla/readability": "^0.6.0",
     "jsdom": "^30.1.3",
     "prettier": "^3.9.10"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.7"
   }
 }
