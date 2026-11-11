@@ -12,15 +12,14 @@ export const COLLECTION = "pawgo_dogcare";
 // Send an HTTP request to Ollama and return its JSON response.
 export async function requestJSON(url, options = {}) {
   const response = await fetch(url, options);
-  const body = await response.text();
-  const data = body ? JSON.parse(body) : {};
 
   // Stop with the server's response included if Ollama reports an error.
   if (!response.ok) {
+    const body = await response.text();
     throw new Error("Request failed (" + response.status + "): " + body);
   }
 
-  return data;
+  return response.json();
 }
 
 export async function isOllamaServerRunning() {
