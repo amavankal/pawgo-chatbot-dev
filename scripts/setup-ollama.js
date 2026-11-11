@@ -40,7 +40,9 @@ async function main() {
     // else just propagate errors
     ollamaServer.on("error", (err) => {
       if (err.code === "ENOENT")
-        throw new Error("Ollama is not installed :(. Pls install!", { cause: error });
+        throw new Error("Ollama is not installed :(. Pls install!", {
+          cause: error,
+        });
       throw err;
     });
 
