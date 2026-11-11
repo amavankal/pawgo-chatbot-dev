@@ -4,7 +4,7 @@ import {
   requestJSON,
   QDRANT_URL,
   COLLECTION,
-} from "../utils/embeddings.js";
+} from "../utils/utils.js";
 
 /**
  * Returns response to prompt from LLM

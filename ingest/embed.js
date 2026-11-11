@@ -5,7 +5,7 @@ import {
   EMBEDDING_MODEL,
   VECTOR_SIZE,
   requestJSON,
-} from "../utils/embeddings.js";
+} from "../utils/utils.js";
 
 const CHUNKS_FILE = new URL("../output/cleaned_chunks.json", import.meta.url);
 const OUTPUT_FILE = new URL("../output/embedded_chunks.json", import.meta.url);

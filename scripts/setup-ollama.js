@@ -4,7 +4,7 @@ import {
   CHAT_MODEL,
   OLLAMA_URL,
   requestJSON,
-} from "../utils/embeddings.js";
+} from "../utils/utils.js";
 import { spawn } from "node:child_process";
 
 // pretty formatting :)
