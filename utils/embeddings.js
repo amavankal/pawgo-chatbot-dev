@@ -1,6 +1,6 @@
 // embedding model constants
 export const OLLAMA_URL = "http://127.0.0.1:11434";
-export const MODEL = "qwen3-embedding:4b";
+export const EMBEDDING_MODEL = "qwen3-embedding:4b";
 export const VECTOR_SIZE = 2560;
 
 // vector db constants

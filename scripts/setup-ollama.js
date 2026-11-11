@@ -57,7 +57,7 @@ async function main() {
     console.log(SETUP_PREFIX + "Ollama server already running. Yay!");
   }
 
-  // Pull model
+  // Pull embedding model
   // check if model exists first
   const result = await requestJSON(OLLAMA_URL + "/api/tags");
   if (
@@ -66,8 +66,8 @@ async function main() {
   )
     console.log(SETUP_PREFIX + "Qwen3-embedding-4b already pulled. Yay!");
   else {
-    console.log(`${SETUP_PREFIX} Pulling ${MODEL}...`);
-    await run("ollama", ["pull", MODEL]);
+    console.log(`${SETUP_PREFIX} Pulling ${EMBEDDING_MODEL}...`);
+    await run("ollama", ["pull", EMBEDDING_MODEL]);
   }
 
   console.log(SETUP_PREFIX + "Ollama setup complete.");

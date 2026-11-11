@@ -1,6 +1,6 @@
 import {
   OLLAMA_URL,
-  MODEL,
+  EMBEDDING_MODEL,
   requestJSON,
   QDRANT_URL,
   COLLECTION,
@@ -25,7 +25,7 @@ export async function askQuestion(prompt) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      model: MODEL,
+      model: EMBEDDING_MODEL,
       input: prompt,
       // Fail on overlong input instead of embedding a silently truncated chunk.
       truncate: false,
