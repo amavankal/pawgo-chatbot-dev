@@ -105,5 +105,6 @@ export async function askQuestion(prompt) {
   return {
     response: jsonResponse.response,
     sources: jsonResponse.sources_used,
+    time: llmResponse.total_duration / 1e9,
   };
 }

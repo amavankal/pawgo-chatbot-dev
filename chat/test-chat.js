@@ -26,6 +26,11 @@ async function main() {
           .join("\n") +
         "\n\n",
     );
+    process.stdout.write(
+      "\x1b[1;34mGeneration Time:\x1b[0m\n" +
+        response.time +
+        " seconds\n\n",
+    );
 
     process.stdout.write("\x1b[1mEnter prompt (Q to quit):\x1b[0m ");
   });
