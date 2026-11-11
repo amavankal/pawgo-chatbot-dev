@@ -3,6 +3,8 @@ export const OLLAMA_URL = "http://127.0.0.1:11434";
 export const EMBEDDING_MODEL = "qwen3-embedding:4b";
 export const VECTOR_SIZE = 2560;
 
+export const CHAT_MODEL = "qwen3.5:4b";
+
 // vector db constants
 export const QDRANT_URL = "http://127.0.0.1:6333";
 export const COLLECTION = "pawgo_dogcare";
