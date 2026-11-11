@@ -4,7 +4,16 @@ import {
   requestJSON,
   QDRANT_URL,
   COLLECTION,
+  CHAT_MODEL,
 } from "../utils/utils.js";
+import { readFile } from "node:fs/promises";
+
+const SYSTEM_PROMPT = (
+  await readFile(new URL("./context/system-prompt.txt", import.meta.url))
+).toString();
+const DOCUMENT_FORMAT = (
+  await readFile(new URL("./context/document-format.txt", import.meta.url))
+).toString();
 
 /**
  * Returns response to prompt from LLM
@@ -33,7 +42,7 @@ export async function askQuestion(prompt) {
   });
 
   // 2: query Qdrant to find relevant context DEBUG
-  const response = await requestJSON(
+  const context = await requestJSON(
     `${QDRANT_URL}/collections/${COLLECTION}/points/query`,
     {
       method: "POST",
@@ -45,12 +54,56 @@ export async function askQuestion(prompt) {
     },
   );
 
+  // 3: construct system prompt
+  let messages = [
+    {
+      role: "system",
+      content: SYSTEM_PROMPT,
+    },
+    {
+      role: "system",
+      content:
+        "Retrieved knowledge base content:\n\n" +
+        context.result.points
+          .map((chunk, index) =>
+            DOCUMENT_FORMAT.replace("$INDEX$", index + 1)
+              .replace("$URL$", chunk.payload.source_url)
+              .replace("$CONTENT$", chunk.payload.text),
+          )
+          .join("\n"),
+    },
+    {
+      role: "user",
+      content: prompt,
+    },
+  ];
+
+  // query Qwen through ollama chat API (won't use generate so as to remember convo history)
+  console.log("Querying chat model...");
+  const llmResponse = await requestJSON(OLLAMA_URL + "/api/chat", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      model: CHAT_MODEL,
+      // chat history: implement later
+      messages: messages,
+      format: "json",
+      options: {
+        num_predict: 4096,
+      },
+      think: false,
+      stream: false,
+    }),
+  });
+
+  if (llmResponse.done_reason === "length")
+    throw new Error("LLM ran out of context. :(");
+
+  // extract content from response
+  const jsonResponse = JSON.parse(llmResponse.message.content);
+
   return {
-    response: "not implemented",
-    sources: response.result.points.map((chunk) => ({
-      id: chunk.payload.id,
-      url: chunk.payload.source_url,
-      text: chunk.payload.text,
-    })),
+    response: jsonResponse.response,
+    sources: jsonResponse.sources_used,
   };
 }
