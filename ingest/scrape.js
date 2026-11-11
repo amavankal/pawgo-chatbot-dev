@@ -14,7 +14,7 @@ const DEBUG = true; // change if U don't want FETCHED_HTML to be generated
 const OUTPUT_DIR = new URL("../output/", import.meta.url);
 const DEBUG_DIR = new URL("FETCHED_HTML/", OUTPUT_DIR);
 const RESULTS_FILE = new URL("OUTPUT.json", OUTPUT_DIR);
-const SOURCES = new URL("./input/sources.json", import.meta.url);
+const SOURCES = new URL("./input/source_metadata.json", import.meta.url);
 
 // (url: string, title: string, blocks: { type: string, text: string }[])
 const results = [];
@@ -22,7 +22,7 @@ const results = [];
 // 1: read urls from sources.json
 let urls;
 try {
-  urls = JSON.parse(await readFile(SOURCES)).urls;
+  urls = Object.keys(JSON.parse(await readFile(SOURCES)));
   //console.log("URLS:\n" + urls.join("\n"));
 } catch (err) {
   console.log(err);
