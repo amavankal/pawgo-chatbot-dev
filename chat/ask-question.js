@@ -50,6 +50,7 @@ export async function askQuestion(prompt) {
       body: JSON.stringify({
         query: embedding.embeddings[0],
         with_payload: true,
+        limit: 3, 
       }),
     },
   );
@@ -89,7 +90,8 @@ export async function askQuestion(prompt) {
       messages: messages,
       format: "json",
       options: {
-        num_predict: 4096,
+        num_ctx:8192, 
+        num_predict: 1024,
       },
       think: false,
       stream: false,
