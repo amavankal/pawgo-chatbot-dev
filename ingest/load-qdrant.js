@@ -5,7 +5,7 @@ import {
   COLLECTION,
   VECTOR_SIZE,
   QDRANT_URL,
-} from "../utils/embeddings.js";
+} from "../utils/utils.js";
 
 const EMBEDDED_FILE = new URL(
   "../output/embedded_chunks.json",

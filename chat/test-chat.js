@@ -16,16 +16,20 @@ async function main() {
     const response = await askQuestion(input.toString());
 
     // format response to output: print response & sources
-    process.stdout.write("\x1b[1;34mResponse:\x1b[0m " + response.response + "\n");
     process.stdout.write(
-      "\x1b[1;34mSource URLs:\x1b[0m\n" +
-        response.sources.map((src) => src.url).join("\n") +
-        "\n",
+      "\x1b[1;34mResponse:\x1b[0m " + response.response + "\n",
     );
     process.stdout.write(
-      "\x1b[1;34mSource texts:\x1b[0m\n" +
-        response.sources.map((src) => `\x1b[1;35m${src.id}\x1b[0m\n${src.text}`).join("\n") +
+      "\x1b[1;34mSources used:\x1b[0m\n" +
+        response.sources
+          .map((src) => `\x1b[1;35m${src.url}\x1b[0m\n${src.chunk}`)
+          .join("\n") +
         "\n\n",
+    );
+    process.stdout.write(
+      "\x1b[1;34mGeneration Time:\x1b[0m\n" +
+        response.time +
+        " seconds\n\n",
     );
 
     process.stdout.write("\x1b[1mEnter prompt (Q to quit):\x1b[0m ");

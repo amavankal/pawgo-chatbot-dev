@@ -1,13 +1,16 @@
 import {
   isOllamaServerRunning,
-  MODEL,
+  EMBEDDING_MODEL,
+  CHAT_MODEL,
   OLLAMA_URL,
   requestJSON,
-} from "../utils/embeddings.js";
+} from "../utils/utils.js";
 import { spawn } from "node:child_process";
 
+// pretty formatting :)
 const SETUP_PREFIX = "\x1b[1;32mSETUP SCRIPT:\x1b[0m ";
 
+// run command, printing output to stdout
 async function run(command, args) {
   return new Promise((resolve, reject) => {
     const process = spawn(command, args, {
@@ -37,7 +40,9 @@ async function main() {
     // else just propagate errors
     ollamaServer.on("error", (err) => {
       if (err.code === "ENOENT")
-        throw new Error("Ollama is not installed :(.", { cause: error });
+        throw new Error("Ollama is not installed :(. Pls install!", {
+          cause: error,
+        });
       throw err;
     });
 
@@ -57,20 +62,33 @@ async function main() {
     console.log(SETUP_PREFIX + "Ollama server already running. Yay!");
   }
 
-  // Pull model
-  // check if model exists first
-  const result = await requestJSON(OLLAMA_URL + "/api/tags");
+  // Check available models
+  const models = await requestJSON(OLLAMA_URL + "/api/tags");
+
+  // check if embedding model exists first, then pull
   if (
-    result.models.length > 0 &&
-    result.models.some((model) => model.model === "qwen3-embedding:4b")
+    models.models.length > 0 &&
+    models.models.some((model) => model.model === EMBEDDING_MODEL)
   )
-    console.log(SETUP_PREFIX + "Qwen3-embedding-4b already pulled. Yay!");
+    console.log(SETUP_PREFIX + `${EMBEDDING_MODEL} already pulled. Yay!`);
   else {
-    console.log(`${SETUP_PREFIX} Pulling ${MODEL}...`);
-    await run("ollama", ["pull", MODEL]);
+    console.log(`${SETUP_PREFIX} Pulling ${EMBEDDING_MODEL}...`);
+    await run("ollama", ["pull", EMBEDDING_MODEL]);
   }
 
-  console.log(SETUP_PREFIX + "Ollama setup complete.");
+  // check if chat model exists first, then pull
+  if (
+    models.models.length > 0 &&
+    models.models.some((model) => model.model === CHAT_MODEL)
+  )
+    console.log(`${SETUP_PREFIX} ${CHAT_MODEL} already pulled. Yay!`);
+  else {
+    console.log(`${SETUP_PREFIX} Pulling ${CHAT_MODEL}...`);
+    await run("ollama", ["pull", CHAT_MODEL]);
+  }
+
+  // Log completion
+  console.log(SETUP_PREFIX + "\x1b[1;7;38;5;28mOllama setup complete.\x1b[0m");
 }
 
 main().catch((err) => {

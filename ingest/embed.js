@@ -2,10 +2,10 @@ import { readFile, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import {
   OLLAMA_URL,
-  MODEL,
+  EMBEDDING_MODEL,
   VECTOR_SIZE,
   requestJSON,
-} from "../utils/embeddings.js";
+} from "../utils/utils.js";
 
 const CHUNKS_FILE = new URL("../output/cleaned_chunks.json", import.meta.url);
 const OUTPUT_FILE = new URL("../output/embedded_chunks.json", import.meta.url);
@@ -29,7 +29,7 @@ for (let start = 0; start < chunks.length; start += BATCH_SIZE) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      model: MODEL,
+      model: EMBEDDING_MODEL,
       input: batch.map((chunk) => chunk.text),
       // Fail on overlong input instead of embedding a silently truncated chunk.
       truncate: false,
@@ -58,7 +58,7 @@ for (let start = 0; start < chunks.length; start += BATCH_SIZE) {
     embeddedChunks.push({
       ...batch[index],
       embedding: vector,
-      embedding_model: MODEL,
+      embedding_model: EMBEDDING_MODEL,
     });
   }
 

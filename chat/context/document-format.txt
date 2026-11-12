@@ -1,0 +1,3 @@
+[Document $INDEX$]
+Source: $URL$
+Content: $CONTENT$
