@@ -6,14 +6,15 @@
  *   concept, so there are probably many silly silly things happening..
  */
 import { readFile, writeFile, mkdir } from "node:fs/promises";
-import url from "node:url";
 import { JSDOM } from "jsdom";
 import { Readability } from "@mozilla/readability";
 import { format } from "prettier";
 
 const DEBUG = true; // change if U don't want FETCHED_HTML to be generated
-const DEBUG_DIR = "output/FETCHED_HTML";
-const RESULTS_FILE = "output/OUTPUT.json";
+const OUTPUT_DIR = new URL("../output/", import.meta.url);
+const DEBUG_DIR = new URL("FETCHED_HTML/", OUTPUT_DIR);
+const RESULTS_FILE = new URL("OUTPUT.json", OUTPUT_DIR);
+const SOURCES = new URL("./input/source_metadata.json", import.meta.url);
 
 // (url: string, title: string, blocks: { type: string, text: string }[])
 const results = [];
@@ -21,19 +22,19 @@ const results = [];
 // 1: read urls from sources.json
 let urls;
 try {
-  urls = JSON.parse(await readFile("./sources.json")).urls;
+  urls = Object.keys(JSON.parse(await readFile(SOURCES)));
   //console.log("URLS:\n" + urls.join("\n"));
 } catch (err) {
   console.log(err);
 }
 
 // create output directory
-mkdir("./output/", { recursive: true });
+await mkdir(OUTPUT_DIR, { recursive: true });
 
 // 1.5: create a directory for fetched html (for debugging inspection)
 if (DEBUG) {
   try {
-    await mkdir(`./${DEBUG_DIR}/`, { recursive: true });
+    await mkdir(DEBUG_DIR, { recursive: true });
   } catch (err) {
     if (err.code !== "EEXIST") console.log(err);
   }
@@ -44,7 +45,15 @@ for (let source of urls) {
   let urlObj = new URL(source);
 
   // fetch from source + get html
-  const response = await fetch(urlObj);
+  let response;
+  try {
+    response = await fetch(urlObj);
+  } catch (err) {
+    if (err == "UND_ERR_CONNECT_TIMEOUT")
+      console.log(`Fetch failed for ${urlObj.href} due to timeout.\n`);
+    else console.log(`Fetch failed for ${urlObj.href}.\n`);
+    continue;
+  }
 
   // verify content type - if not HTML oof
   if (!response.headers.get("content-type").includes("text/html")) {
@@ -79,10 +88,9 @@ for (let source of urls) {
 
     // write to debugging file
     try {
-      await writeFile(
-        `./${DEBUG_DIR}/${(urlObj.hostname + urlObj.pathname).replace(/[./]/g, "-") + ".html"}`,
-        html,
-      );
+      const filename =
+        (urlObj.hostname + urlObj.pathname).replace(/[./]/g, "-") + ".html";
+      await writeFile(new URL(filename, DEBUG_DIR), html);
     } catch (err) {
       console.log("Error writing to debug file: " + err);
     }
@@ -121,7 +129,11 @@ for (let source of urls) {
   // remove links that the text is a page control, like “Skip to content” or “Go to top”
   articleDocument.querySelectorAll("a").forEach((link) => {
     const label = link.textContent.replace(/\s+/g, " ").trim().toLowerCase();
-    if (/^(skip to (main )?content|go to top|back to top|back to the top)$/.test(label)) {
+    if (
+      /^(skip to (main )?content|go to top|back to top|back to the top)$/.test(
+        label,
+      )
+    ) {
       const container = link.closest("li, p");
       link.remove();
       if (container && !container.textContent.trim()) container.remove();
@@ -162,8 +174,8 @@ console.log(
 
 // write results to a file
 try {
-  writeFile(
-    `./${RESULTS_FILE}`,
+  await writeFile(
+    RESULTS_FILE,
     await format(JSON.stringify(results), { parser: "json" }),
   );
 } catch (err) {

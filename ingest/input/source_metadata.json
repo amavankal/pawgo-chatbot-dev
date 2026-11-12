@@ -3,9 +3,7 @@
     "source_type": "Pet information website",
     "trustworthiness": "Trustworthy",
     "trust_rank": 2,
-    "topics": [
-      "Indian Dogs"
-    ],
+    "topics": ["Indian Dogs"],
     "audience": "prospective dog owners",
     "source_notes": ""
   },
@@ -21,9 +19,7 @@
     "source_type": "Nonprofit organization",
     "trustworthiness": "Trustworthy",
     "trust_rank": 2,
-    "topics": [
-      "Indian Dogs"
-    ],
+    "topics": ["Indian Dogs"],
     "audience": "prospective dog owners",
     "source_notes": ""
   },
@@ -31,10 +27,7 @@
     "source_type": "Nonprofit organization",
     "trustworthiness": "Trustworthy",
     "trust_rank": 2,
-    "topics": [
-      "Behavior",
-      "Training"
-    ],
+    "topics": ["Behavior", "Training"],
     "audience": "dog owners",
     "source_notes": ""
   },
@@ -50,10 +43,7 @@
     "source_type": "Nonprofit organization",
     "trustworthiness": "Trustworthy",
     "trust_rank": 2,
-    "topics": [
-      "Training",
-      "Behavior"
-    ],
+    "topics": ["Training", "Behavior"],
     "audience": "community dog feeders",
     "source_notes": "Focuses on relationships between community dogs and feeders."
   },
@@ -69,9 +59,7 @@
     "source_type": "Commercial pet-care",
     "trustworthiness": "Trustworthy",
     "trust_rank": 2,
-    "topics": [
-      "Exercise"
-    ],
+    "topics": ["Exercise"],
     "audience": "dog owners",
     "source_notes": ""
   },
@@ -87,9 +75,7 @@
     "source_type": "Commercial pet-care",
     "trustworthiness": "Mostly trustworthy",
     "trust_rank": 3,
-    "topics": [
-      "Indian Dogs"
-    ],
+    "topics": ["Indian Dogs"],
     "audience": "dog owners",
     "source_notes": "The article promotes the company's supplements."
   },
@@ -112,9 +98,7 @@
     "source_type": "Commercial pet-care",
     "trustworthiness": "Mostly trustworthy",
     "trust_rank": 3,
-    "topics": [
-      "Grooming"
-    ],
+    "topics": ["Grooming"],
     "audience": "dog owners",
     "source_notes": "The sheet describes the article as very anecdotal."
   },
@@ -122,9 +106,7 @@
     "source_type": "Commercial pet-care",
     "trustworthiness": "Mostly trustworthy",
     "trust_rank": 3,
-    "topics": [
-      "Grooming"
-    ],
+    "topics": ["Grooming"],
     "audience": "dog owners",
     "source_notes": "The article includes product plugs; the sheet notes it also contains useful information."
   }

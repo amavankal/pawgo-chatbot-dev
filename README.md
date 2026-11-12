@@ -4,6 +4,24 @@ This project is a proof of concept for collecting dog-care information for PawGo
 
 The scraper can be run by itself with `node scrape.js`. To run the full pipeline, use the complete sequence below.
 
+## Shortcut to run complete sequence from scratch on MacOS
+
+This is for if you don't want to install extra apps and already have Homebrew installed. For Windows just use your preferred package manager instead of brew and install the same tools. The steps below this are more detailed and don't abstract away complexity, so check them out for details.
+
+```sh
+npm install
+brew install ollama colima docker docker-compose
+colima start
+npm run setup
+npm run ingest
+```
+
+## How to test the pipeline
+
+```sh
+npm run test
+```
+
 ## Install the project libraries
 
 Install Node.js 18 or newer. In Terminal, go to this project folder and run:
@@ -15,6 +33,25 @@ npm install
 ## Set up local Qdrant
 
 Each teammate runs their own local Qdrant database. Install and start [Docker Desktop for Mac](https://docs.docker.com/desktop/setup/install/mac-install/). Then, for a new setup, start Qdrant in Docker with:
+
+<span style="color: gray; font-style: italic"> _An alternative to installing Docker Desktop to get the Docker Engine w/ a Linux VM is to install `colima`, which provides the Linux environment Docker needs to run. You would then also need to install the Docker CLI client `docker` and `docker-compose` separately if you want to use colima. Start the Docker runtime with `colima start`_</span>
+
+### Shortcut
+
+To start the Qdrant database container (in root of this project):
+
+```sh
+docker compose up -d
+```
+
+To stop the Qdrant database container (in root of this project). Pass `-v` to `docker compose down` if for some reason you don't want to save the vectors stored in the database for the next time you spin up the database:
+
+```sh
+docker compose down # if you want to remove the container (saves the database data)
+docker compose stop qdrant  # if you want to temporarily stop qdrant; restart w/ docker compose start qdrant
+```
+
+### Using docker CLI with runtime args instead of docker compose shortcut
 
 ```sh
 docker run -d \
@@ -38,7 +75,9 @@ Open [http://localhost:6333/dashboard](http://localhost:6333/dashboard) to brows
 
 ## Set up Ollama and the embedding model
 
-Download and install [Ollama for macOS](https://ollama.com/download), then open the Ollama app so its local service is running. Download Qwen3 Embedding 4B:
+Download and install [Ollama for macOS](https://ollama.com/download)*, then open the Ollama app so its local service is running. Download Qwen3 Embedding 4B:
+
+<span style="color: gray; font-style: italic"> *An alternative to installing the Ollama app is to install just the CLI tool (`brew install ollama` on MacOS) and starting the local service (the server) with `ollama serve`</span>
 
 ```sh
 ollama pull qwen3-embedding:4b
@@ -54,19 +93,29 @@ The embedding model is downloaded to each teammate's computer by Ollama. It is n
 
 ## Run the scraping and data pipeline
 
+### Shortcut
+
+This runs all the scripts in order and may take a couple minutes:
+
+```sh
+npm run ingest
+```
+
+### Step-by-step
+
 To scrape the source URLs, run:
 
 ```sh
-node scrape.js
+node ingest/scrape.js
 ```
 
 To continue through cleaning, chunking, embedding, and database ingestion, run each script in order:
 
 ```sh
-node clean.js
-node chunk.js
-node embed.js
-node load-qdrant.js
+node ingest/clean.js
+node ingest/chunk.js
+node ingest/embed.js
+node ingest/load-qdrant.js
 ```
 
 The scripts create these files under `output/`:

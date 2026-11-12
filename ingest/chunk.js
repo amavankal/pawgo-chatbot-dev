@@ -1,8 +1,9 @@
 import { readFile, writeFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
 
-const INPUT_FILE = "./output/cleaned_articles.json";
-const METADATA_FILE = "./source_metadata.json";
-const OUTPUT_FILE = "./output/cleaned_chunks.json";
+const INPUT_FILE = new URL("../output/cleaned_articles.json", import.meta.url);
+const METADATA_FILE = new URL("./input/source_metadata.json", import.meta.url);
+const OUTPUT_FILE = new URL("../output/cleaned_chunks.json", import.meta.url);
 
 // Set the target maximum size for each chunk, measured in words.
 const MAX_WORDS = 300;
@@ -32,7 +33,11 @@ for (const article of articles) {
 
   // Require a metadata entry so every saved chunk has source context.
   if (!metadata) {
-    throw new Error("Missing metadata for " + article.url + "; add it to source_metadata.json.");
+    throw new Error(
+      "Missing metadata for " +
+        article.url +
+        "; add it to source_metadata.json.",
+    );
   }
 
   let currentHeading = article.title;
@@ -100,4 +105,4 @@ for (const article of articles) {
 await writeFile(OUTPUT_FILE, JSON.stringify(chunks, null, 2));
 
 // Report how many chunks were created.
-console.log(`Created ${chunks.length} chunks in ${OUTPUT_FILE}`);
+console.log(`Created ${chunks.length} chunks in ${fileURLToPath(OUTPUT_FILE)}`);
