@@ -1,41 +1,63 @@
+
 import { askQuestion } from "./ask-question.js";
 
-// for testing RAG pipeline on commandline
+// For testing the RAG pipeline in Terminal
 async function main() {
   console.log("\x1b[1;34mStart chatting!\x1b[0m\n");
 
   process.stdout.write("\x1b[1mEnter prompt (Q to quit):\x1b[0m ");
+
   process.stdin.on("data", async (input) => {
-    // leave if user wants to
-    if (input.toString().trim().toUpperCase() === "Q") {
-      process.stdout.write("Exiting..");
+    const prompt = input.toString().trim();
+
+    // Exit when user enters Q
+    if (prompt.toUpperCase() === "Q") {
+      console.log("\nExiting...");
       process.exit(0);
     }
 
-    // call askQuestion with user's prompt
-    const response = await askQuestion(input.toString());
+    if (!prompt) {
+      process.stdout.write("\x1b[1mEnter prompt (Q to quit):\x1b[0m ");
+      return;
+    }
 
-    // format response to output: print response & sources
-    process.stdout.write(
-      "\x1b[1;34mResponse:\x1b[0m " + response.response + "\n",
-    );
-    process.stdout.write(
-      "\x1b[1;34mSources used:\x1b[0m\n" +
-        response.sources
-          .map((src) => `\x1b[1;35m${src.url}\x1b[0m\n${src.chunk}`)
-          .join("\n") +
-        "\n\n",
-    );
-    process.stdout.write(
-      "\x1b[1;34mGeneration Time:\x1b[0m\n" +
-        response.time +
-        " seconds\n\n",
-    );
+    try {
+      // Display tokens immediately as Ollama generates them
+      let started = false; 
+
+      const response = await askQuestion(prompt, (token) => {
+        if (!started) { 
+          process.stdout.write("\n\x1b[1;34mResponse:\x1b[0m ");
+          started = true; 
+        }
+        process.stdout.write(token);
+      });
+
+      process.stdout.write("\n\n");
+
+      // Display retrieved sources
+      process.stdout.write("\x1b[1;34mSources used:\x1b[0m\n");
+
+      for (const src of response.sources ?? []) {
+        process.stdout.write(
+          `\x1b[1;35m${src.url}\x1b[0m\n${src.text ?? src.chunk ?? ""}\n\n`
+        );
+      }
+
+      // Display generation time only once
+      console.log(
+        "\x1b[1;34mGeneration Time:\x1b[0m",
+        response.time.toFixed(2),
+        "seconds\n"
+      );
+    } catch (error) {
+      console.error("\nChatbot error:", error.message);
+    }
 
     process.stdout.write("\x1b[1mEnter prompt (Q to quit):\x1b[0m ");
   });
 }
 
-main().catch((err) => {
-  console.log("Something went wrong testing RAG pipeline: " + err);
+main().catch((error) => {
+  console.error("Something went wrong:", error);
 });
