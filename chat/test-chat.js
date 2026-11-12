@@ -35,14 +35,21 @@ async function main() {
 
       process.stdout.write("\n\n");
 
-      // Display retrieved sources
+      // Display only source URLs
       process.stdout.write("\x1b[1;34mSources used:\x1b[0m\n");
 
-      for (const src of response.sources ?? []) {
-        process.stdout.write(
-          `\x1b[1;35m${src.url}\x1b[0m\n${src.text ?? src.chunk ?? ""}\n\n`
-        );
-      }
+      const uniqueUrls = [...new Set(
+        (response.sources ?? [])
+        .map((src) => src.url)
+        .filter(Boolean)
+      ),
+    ];
+
+    for (const url of uniqueUrls) { 
+      process.stdout.write(`\x1b[1;35m${url}\x1b[0m\n`);
+    }
+
+    process.stdout.write("\n"); 
 
       // Display generation time only once
       console.log(

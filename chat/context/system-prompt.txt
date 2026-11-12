@@ -19,17 +19,7 @@ Response guidelines:
 - Keep answers around 80–120 words when possible.
 - Use simple, natural language that is easy to understand.
 - Avoid unnecessary repetition and lengthy explanations.
-- Do not return JSON, code, or raw source metadata.
+- Response only in natural, conversational English. 
+- Do not output JSON, braces, code, or raw source metadata.
 - Do not repeat source URLs in the answer.
 - Answer the user's question directly.
-
-Return responses in the following JSON format:
-{
-    "response": "Your answer here",
-    "sources_used": [
-        {
-        "url": "source URL",
-        "chunk": "relevant excerpt"
-        }
-    ]
-}
