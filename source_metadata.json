@@ -1,0 +1,131 @@
+{
+  "https://dogsindia.com/indian_breeds.htm": {
+    "source_type": "Pet information website",
+    "trustworthiness": "Trustworthy",
+    "trust_rank": 2,
+    "topics": [
+      "Indian Dogs"
+    ],
+    "audience": "prospective dog owners",
+    "source_notes": ""
+  },
+  "https://kannananimalwelfare.org/why-adopt-indian-pariah-dog/": {
+    "source_type": "Nonprofit organization",
+    "trustworthiness": "Trustworthy",
+    "trust_rank": 2,
+    "topics": [],
+    "audience": "prospective dog owners",
+    "source_notes": ""
+  },
+  "https://kannananimalwelfare.org/indian-dog-breeds/": {
+    "source_type": "Nonprofit organization",
+    "trustworthiness": "Trustworthy",
+    "trust_rank": 2,
+    "topics": [
+      "Indian Dogs"
+    ],
+    "audience": "prospective dog owners",
+    "source_notes": ""
+  },
+  "https://bluecrossofhyd.org/indie-dogs/bringing-home-an-indie-dog-essential-tips-for-a-happy-life-together/": {
+    "source_type": "Nonprofit organization",
+    "trustworthiness": "Trustworthy",
+    "trust_rank": 2,
+    "topics": [
+      "Behavior",
+      "Training"
+    ],
+    "audience": "dog owners",
+    "source_notes": ""
+  },
+  "https://bluecrossofhyd.org/indie-dogs/feeding-re-defined-a-practical-handbook/": {
+    "source_type": "Nonprofit organization",
+    "trustworthiness": "Trustworthy",
+    "trust_rank": 2,
+    "topics": [],
+    "audience": "community dog feeders",
+    "source_notes": "Primarily about feeding street dogs; may be less relevant to household pet owners."
+  },
+  "https://bluecrossofhyd.org/indie-dogs/feeding-re-defined-creating-trust-between-dogs-feeders/": {
+    "source_type": "Nonprofit organization",
+    "trustworthiness": "Trustworthy",
+    "trust_rank": 2,
+    "topics": [
+      "Training",
+      "Behavior"
+    ],
+    "audience": "community dog feeders",
+    "source_notes": "Focuses on relationships between community dogs and feeders."
+  },
+  "https://friendicoes.org/raising-an-indie-pup-everything-you-need-to-know/": {
+    "source_type": "Nonprofit organization",
+    "trustworthiness": "Trustworthy",
+    "trust_rank": 2,
+    "topics": [],
+    "audience": "puppy owners",
+    "source_notes": ""
+  },
+  "https://www.lickicious.com/blogs/pet-care/unleash-the-fun-best-exercises-to-keep-your-dog-healthy-and-happy?srsltid=AU7gw4VZJ0RPkedBsj21eG19gAFB679NHaMkKAWZ4_qjEpojewz7BYXu": {
+    "source_type": "Commercial pet-care",
+    "trustworthiness": "Trustworthy",
+    "trust_rank": 2,
+    "topics": [
+      "Exercise"
+    ],
+    "audience": "dog owners",
+    "source_notes": ""
+  },
+  "https://www.aafco.org/consumers/understanding-pet-food/selecting-the-right-pet-food/": {
+    "source_type": "Nonprofit organization",
+    "trustworthiness": "Trustworthy",
+    "trust_rank": 2,
+    "topics": [],
+    "audience": "dog owners",
+    "source_notes": "The sheet notes it may not be the most useful source."
+  },
+  "https://venttura.com/blogs/dog-blogs/best-indian-dog-breeds": {
+    "source_type": "Commercial pet-care",
+    "trustworthiness": "Mostly trustworthy",
+    "trust_rank": 3,
+    "topics": [
+      "Indian Dogs"
+    ],
+    "audience": "dog owners",
+    "source_notes": "The article promotes the company's supplements."
+  },
+  "https://pawversesocial.com/blog/indian-indie-dogs-a-vet-s-honest-care-guide-for-first-time-pet-parents": {
+    "source_type": "Commercial pet-care",
+    "trustworthiness": "Mostly trustworthy",
+    "trust_rank": 3,
+    "topics": [
+      "Indie Dog Basics",
+      "Food & Nutrition",
+      "Healthcare",
+      "Exercise",
+      "Training",
+      "Grooming"
+    ],
+    "audience": "first-time dog owners",
+    "source_notes": "Anecdotal; the sheet notes it contains useful facts."
+  },
+  "https://captainzack.in/blogs/articles/grooming-tips-for-indies": {
+    "source_type": "Commercial pet-care",
+    "trustworthiness": "Mostly trustworthy",
+    "trust_rank": 3,
+    "topics": [
+      "Grooming"
+    ],
+    "audience": "dog owners",
+    "source_notes": "The sheet describes the article as very anecdotal."
+  },
+  "https://pamperpaws.in/blog/indie-dog-grooming-tips/": {
+    "source_type": "Commercial pet-care",
+    "trustworthiness": "Mostly trustworthy",
+    "trust_rank": 3,
+    "topics": [
+      "Grooming"
+    ],
+    "audience": "dog owners",
+    "source_notes": "The article includes product plugs; the sheet notes it also contains useful information."
+  }
+}
