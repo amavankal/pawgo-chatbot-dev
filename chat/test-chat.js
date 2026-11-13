@@ -3,11 +3,13 @@
  */
 import { askQuestion } from "./ask-question.js";
 
+const PROMPT_STRING = "\x1b[1;32mEnter prompt (Q to quit):\x1b[0m ";
+
 // For testing the RAG pipeline in Terminal
 async function main() {
-  console.log("\x1b[1;34mStart chatting!\x1b[0m\n");
+  process.stdout.write("\x1b[1;34mStart chatting!\x1b[0m\n\n");
+  process.stdout.write(PROMPT_STRING);
 
-  process.stdout.write("\x1b[1mEnter prompt (Q to quit):\x1b[0m ");
   let messageHistory = null;
 
   process.stdin.on("data", async (input) => {
@@ -20,7 +22,7 @@ async function main() {
     }
 
     if (!prompt) {
-      process.stdout.write("\x1b[1mEnter prompt (Q to quit):\x1b[0m ");
+      process.stdout.write(PROMPT_STRING);
       return;
     }
 
@@ -66,7 +68,7 @@ async function main() {
       console.error("\nChatbot error:", error.message);
     }
 
-    process.stdout.write("\x1b[1mEnter prompt (Q to quit):\x1b[0m ");
+    process.stdout.write(PROMPT_STRING);
   });
 }
 

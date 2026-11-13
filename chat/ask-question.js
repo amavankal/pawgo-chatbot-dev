@@ -10,6 +10,7 @@ import { readFile } from "node:fs/promises";
 
 // Max # of interactions to return, including the most recent one
 const MAX_MESSAGE_HISTORY = 3;
+const MAX_RETRIEVED_DOCUMENTS = 3;
 
 const SYSTEM_PROMPT = (
   await readFile(new URL("./context/system-prompt.txt", import.meta.url))
@@ -70,7 +71,7 @@ export async function askQuestion(prompt, onToken, messageHistory = null) {
       body: JSON.stringify({
         query: embedding.embeddings[0],
         with_payload: true,
-        limit: 3,
+        limit: MAX_RETRIEVED_DOCUMENTS,
       }),
     },
   );
