@@ -1,4 +1,3 @@
-
 import { askQuestion } from "./ask-question.js";
 
 // For testing the RAG pipeline in Terminal
@@ -23,12 +22,12 @@ async function main() {
 
     try {
       // Display tokens immediately as Ollama generates them
-      let started = false; 
+      let started = false;
 
       const response = await askQuestion(prompt, (token) => {
-        if (!started) { 
+        if (!started) {
           process.stdout.write("\n\x1b[1;34mResponse:\x1b[0m ");
-          started = true; 
+          started = true;
         }
         process.stdout.write(token);
       });
@@ -38,24 +37,23 @@ async function main() {
       // Display only source URLs
       process.stdout.write("\x1b[1;34mSources used:\x1b[0m\n");
 
-      const uniqueUrls = [...new Set(
-        (response.sources ?? [])
-        .map((src) => src.url)
-        .filter(Boolean)
-      ),
-    ];
+      const uniqueUrls = [
+        ...new Set(
+          (response.sources ?? []).map((src) => src.url).filter(Boolean),
+        ),
+      ];
 
-    for (const url of uniqueUrls) { 
-      process.stdout.write(`\x1b[1;35m${url}\x1b[0m\n`);
-    }
+      for (const url of uniqueUrls) {
+        process.stdout.write(`\x1b[1;35m${url}\x1b[0m\n`);
+      }
 
-    process.stdout.write("\n"); 
+      process.stdout.write("\n");
 
       // Display generation time only once
       console.log(
         "\x1b[1;34mGeneration Time:\x1b[0m",
         response.time.toFixed(2),
-        "seconds\n"
+        "seconds\n",
       );
     } catch (error) {
       console.error("\nChatbot error:", error.message);
