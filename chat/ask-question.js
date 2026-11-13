@@ -8,6 +8,9 @@ import {
 } from "../utils/utils.js";
 import { readFile } from "node:fs/promises";
 
+// Max # of interactions to return, including the most recent one
+const MAX_MESSAGE_HISTORY = 3;
+
 const SYSTEM_PROMPT = (
   await readFile(new URL("./context/system-prompt.txt", import.meta.url))
 ).toString();
@@ -17,18 +20,35 @@ const DOCUMENT_FORMAT = (
 
 /**
  * Returns response to prompt from LLM
- * @param prompt string
+ * @param prompt (string) the user's prompt
+ * @param onToken a function that accepts a string. It will be called
+ *  every time a new response token is available from the LLM. (Allows for
+ *  streaming responses)
+ * @param messages an optional array of JUST past user and LLM responses.
+ *  Should not include a system prompt or old context. You shouldn't construct
+ *  this argument yourself, but rather pass in what is returned from previous
+ *  calls to this function.
  * @returns response with following format:
  * {
- *   response: string,
  *   sources: {
  *     id: string,
  *     url: string,
  *     text: string
- *   }[]
+ *   }[],
+ *   time: float
+ *   messageHistory: [
+ *    {
+ *      role: "system" | "user" | "assistant",
+ *      content: string,
+ *    }
+ *   ]
  * }
+ *  - messageHistory will contain at most MAX_MESSAGE_HISTORY past interactions,
+ *    including the most recent interaction (an interaction is one user prompt
+ *    and one chatbot response)
+ *  - the last message object is the chatbot's most recent response
  */
-export async function askQuestion(prompt, onToken) {
+export async function askQuestion(prompt, onToken, messageHistory = null) {
   // 1: embed question
   const embedding = await requestJSON(OLLAMA_URL + "/api/embed", {
     method: "POST",
@@ -50,21 +70,26 @@ export async function askQuestion(prompt, onToken) {
       body: JSON.stringify({
         query: embedding.embeddings[0],
         with_payload: true,
-        limit: 3, 
+        limit: 3,
       }),
     },
   );
 
-  // 3: construct system prompt
+  // 3: construct message history, including system prompt
   let messages = [
     {
       role: "system",
       content: SYSTEM_PROMPT,
     },
+    ...(messageHistory ?? []),
+    {
+      role: "user",
+      content: prompt,
+    },
     {
       role: "system",
       content:
-        "Retrieved knowledge base content:\n\n" +
+        "Retrieved knowledge base content for user's query:\n\n" +
         context.result.points
           .map((chunk, index) =>
             DOCUMENT_FORMAT.replace("$INDEX$", index + 1)
@@ -73,12 +98,8 @@ export async function askQuestion(prompt, onToken) {
           )
           .join("\n"),
     },
-    {
-      role: "user",
-      content: prompt,
-    },
   ];
-  
+
   // 4: Query Qwen through Ollama with streaming
   console.log("Querying chat model...");
 
@@ -160,22 +181,30 @@ export async function askQuestion(prompt, onToken) {
   }
 
   if (doneReason === "length") {
-    console.warn(
-      "\nWarning: The LLM reached its generation limit."
-    );
+    console.warn("\nWarning: The LLM reached its generation limit.");
   }
 
-  const generationTime =
-    (performance.now() - startTime) / 1000;
+  const generationTime = (performance.now() - startTime) / 1000;
 
   // Return the generated response and retrieved sources
   return {
-    response: fullResponse,
     sources: context.result.points.map((point) => ({
       id: point.payload.chunk_id ?? point.id,
       url: point.payload.source_url,
       text: point.payload.text,
     })),
     time: generationTime,
+    messageHistory: [
+      ...messages.slice(
+        // past conversation history, including user's most recent prompt
+        Math.max(1, messages.length - (MAX_MESSAGE_HISTORY - 1) * 2 - 2),
+        messages.length - 1, // don't include context
+      ),
+      {
+        // llm's most recent response
+        role: "assistant",
+        content: fullResponse,
+      },
+    ],
   };
 }

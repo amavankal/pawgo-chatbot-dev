@@ -1,3 +1,6 @@
+/**
+ * Simulates client-side method calling our ask Question API
+ */
 import { askQuestion } from "./ask-question.js";
 
 // For testing the RAG pipeline in Terminal
@@ -5,6 +8,7 @@ async function main() {
   console.log("\x1b[1;34mStart chatting!\x1b[0m\n");
 
   process.stdout.write("\x1b[1mEnter prompt (Q to quit):\x1b[0m ");
+  let messageHistory = null;
 
   process.stdin.on("data", async (input) => {
     const prompt = input.toString().trim();
@@ -30,7 +34,10 @@ async function main() {
           started = true;
         }
         process.stdout.write(token);
-      });
+      }, messageHistory);
+
+      // store message history
+      messageHistory = response.messageHistory;
 
       process.stdout.write("\n\n");
 
