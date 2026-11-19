@@ -2,7 +2,7 @@
 
 This project is a proof of concept for collecting dog-care information for PawGo. It fetches webpages, extracts article content, keeps article sections, cleans obvious page boilerplate, splits the text into searchable chunks, creates embeddings with Qwen3 Embedding through Ollama, and stores the vectors and source metadata in Qdrant.
 
-The scraper can be run by itself with `node scrape.js`. To run the full pipeline, use the complete sequence below.
+The scraper can be run by itself with `node ingest/scrape.js`. To run the full pipeline, use the complete sequence below.
 
 ## Shortcut to run complete sequence from scratch on MacOS
 
@@ -15,6 +15,38 @@ colima start
 npm run setup
 npm run ingest
 ```
+
+## Shortcut to run complete sequence from scratch on Windows
+
+This assumes you already have `npm` and `winget` installed. See the Wiki for help installing `npm`. `winget` should be installed by default.
+
+This requires fewer installations than Mac because Docker Desktop bundles the Docker CLI, Docker Compose, and the Docker engine. However, it does require you to start the Linux VM that Docker Engine needs from the Docker Desktop GUI instead of from command line.
+
+In the directory of the Git repository:
+```powershell
+npm install
+winget install Ollama.Ollama.Portable --source winget
+winget install Docker.DockerDesktop --source winget
+docker desktop start
+```
+
+Skip logging in to Docker. Follow any instructions that show up (you may need to enable Virtual Machines and install WSL, both of which will restart your computer. Remember to run the commands Docker gives in an administrator shell).
+
+```powershell
+npm run setup
+npm run ingest
+```
+
+<details>
+  <summary>PowerShell not recognizing your commands?</summary>
+
+  If you get an error message similar to <em>"The term '\<cmd\>' is not recognized as the name of a cmdlet, function, script file, or operable 
+program"</em>, but you know you installed the tool, try updating your shell's path with the following command:
+
+  ```powershell
+  $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+  ```
+</details>
 
 ## How to test the pipeline
 
